@@ -8,6 +8,7 @@ using System.Configuration;
 using DotNetOpenAuth.OAuth;
 using System.Xml.XPath;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Lektion19.Controllers
 {
@@ -93,6 +94,24 @@ namespace Lektion19.Controllers
             }
             tableBuilder.Append("</table>");
             return tableBuilder.ToString();
+        }
+
+        public string Tweet(string newstatus)
+        {
+            // Skapa tweets
+            var twitter = new WebConsumer(TwitterConsumer.ServiceDescription, this.TokenManager);
+            string resultString;
+            try
+            {
+                string updates = TwitterConsumer.Tweet(twitter,this.AccessToken,newstatus);
+                JToken token = JObject.Parse(updates);
+                resultString = string.Format("{0} - {1}",(string)token.SelectToken("user").SelectToken("screen_name"),(string)token.SelectToken("text"));
+            }
+            catch
+            {
+                resultString = "Error! Could not send new tweet.";
+            }
+            return resultString;
         }
     }
 }
