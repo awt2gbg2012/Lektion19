@@ -7,12 +7,23 @@
 <a href="#" id="getTweets">Get Tweets</a>
 <div id="getTweetsResult"></div>
 
+<input type="text" id="tweetStatus" />
+<a href="#" id="tweet">Tweet</a>
+<div id="tweetResult"></div>
+
 @section Scripts {
 <script type="text/javascript">
     $(function () {
         $('#getTweets').click(function () {
             $.get('/Home/GetTweets', function (data) {
                 $('#getTweetsResult').html(data);
+            });
+            return false;
+        });
+
+        $('#tweet').click(function () {
+            $.get('/Home/Tweet', { newstatus: $('#tweetStatus').val() }, function (data) {
+                $('#tweetResult').html(data);
             });
             return false;
         });
