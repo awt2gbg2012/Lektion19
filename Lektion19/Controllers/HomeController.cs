@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DotNetOpenAuth.ApplicationBlock;
 using System.Configuration;
+using DotNetOpenAuth.OAuth;
 
 namespace Lektion19.Controllers
 {
@@ -47,6 +48,20 @@ namespace Lektion19.Controllers
 
         public ActionResult About()
         {
+            var twitter = new WebConsumer(TwitterConsumer.ServiceDescription,
+                                            this.TokenManager);
+            // Is Twitter calling back with authorization?
+            var accessTokenResponse = twitter.ProcessUserAuthorization();
+            if (accessTokenResponse != null)
+            {
+                this.AccessToken = accessTokenResponse.AccessToken;
+            }
+            else if (this.AccessToken == null)
+            {
+                // If we don't yet have access, immediately request it.
+                twitter.Channel.Send(twitter.PrepareRequestUserAuthorization());
+            }
+
             return View();
         }
     }
