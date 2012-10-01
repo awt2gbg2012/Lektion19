@@ -19,6 +19,25 @@ namespace Lektion19.Controllers
 
         public ActionResult LogOn()
         {
+            string screenName;
+            int userID;
+            if (TwitterConsumer.TryFinishSignInWithTwitter(out screenName, out userID))
+            {
+                string returnUrl = Request.QueryString["ReturnUrl"];
+                FormsAuthentication.SetAuthCookie(screenName, false);
+                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1
+                                            && returnUrl.StartsWith("/")
+                                            && !returnUrl.StartsWith("//")
+                                            && !returnUrl.StartsWith("/\\"))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
             return TwitterConsumer.StartSignInWithTwitter(true).AsActionResult();
         }
 
