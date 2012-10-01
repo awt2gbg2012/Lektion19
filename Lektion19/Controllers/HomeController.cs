@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using DotNetOpenAuth.ApplicationBlock;
 using System.Configuration;
 using DotNetOpenAuth.OAuth;
+using System.Xml.XPath;
+using System.Text;
 
 namespace Lektion19.Controllers
 {
@@ -63,6 +65,33 @@ namespace Lektion19.Controllers
             }
 
             return View();
+        }
+
+        public string GetTweets()
+        {
+            var twitter = new WebConsumer(TwitterConsumer.ServiceDescription, this.TokenManager);
+            XPathDocument updates = new XPathDocument(TwitterConsumer.GetUpdates(twitter, this.AccessToken).CreateReader());
+            XPathNavigator nav = updates.CreateNavigator();
+            var parsedUpdates = from status in nav.Select("/statuses/status").OfType<XPathNavigator>()
+                                where !status.SelectSingleNode("user/protected").ValueAsBoolean
+                                select new
+                                {
+                                    User = status.SelectSingleNode("user/name").InnerXml,
+                                    Status = status.SelectSingleNode("text").InnerXml,
+                                };
+
+            StringBuilder tableBuilder = new StringBuilder();
+            tableBuilder.Append("<table><tr><td>Name</td><td>Update</td></tr>");
+
+            foreach (var update in parsedUpdates)
+            {
+                tableBuilder.AppendFormat(
+                    "<tr><td>{0}</td><td>{1}</td></tr>",
+                    HttpUtility.HtmlEncode(update.User),
+                    HttpUtility.HtmlEncode(update.Status));
+            }
+            tableBuilder.Append("</table>");
+            return tableBuilder.ToString();
         }
     }
 }
