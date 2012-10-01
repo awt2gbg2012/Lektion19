@@ -1,6 +1,24 @@
-# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
-bin
-obj
+﻿#OS junk files
+[Tt]humbs.db
+*.DS_Store
 
-# mstest test results
-TestResults
+#Visual Studio Files
+[Oo]bj
+[Bb]in
+[Tt]estResults
+*.user
+*.suo
+*.[Cc]ache
+*.bak
+*.log
+*.Publish.xml
+*.testsettings
+*.trx
+*.vsmdi
+
+#Ignore private folder
+/Private/
+
+#NuGet
+packages/
+!NuGet.exe
