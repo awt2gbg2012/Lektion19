@@ -176,6 +176,15 @@ namespace DotNetOpenAuth.ApplicationBlock {
 			return nav.SelectSingleNode("/user/screen_name").Value;
 		}
 
+        public static string Tweet(ConsumerBase twitter, string accessToken, string status)
+        {
+            Dictionary<string, string> extraData = new Dictionary<string, string>();
+            extraData.Add("status", status);
+            HttpWebRequest request = twitter.PrepareAuthorizedRequest(TweetEndpoint, accessToken, extraData);
+            IncomingWebResponse response = twitter.Channel.WebRequestHandler.GetResponse(request);
+            return response.GetResponseReader().ReadToEnd();
+        }
+
 		/// <summary>
 		/// Prepares a redirect that will send the user to Twitter to sign in.
 		/// </summary>
