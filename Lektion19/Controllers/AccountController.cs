@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using Lektion19.Models;
+using DotNetOpenAuth.ApplicationBlock;
+using DotNetOpenAuth.Messaging;
 
 namespace Lektion19.Controllers
 {
@@ -17,7 +19,7 @@ namespace Lektion19.Controllers
 
         public ActionResult LogOn()
         {
-            return View();
+            return TwitterConsumer.StartSignInWithTwitter(true).AsActionResult();
         }
 
         //
