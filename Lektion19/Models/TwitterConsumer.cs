@@ -61,6 +61,8 @@ namespace DotNetOpenAuth.ApplicationBlock {
 
 		private static readonly MessageReceivingEndpoint VerifyCredentialsEndpoint = new MessageReceivingEndpoint("http://api.twitter.com/1/account/verify_credentials.xml", HttpDeliveryMethods.GetRequest | HttpDeliveryMethods.AuthorizationHeaderRequest);
 
+        private static readonly MessageReceivingEndpoint TweetEndpoint = new MessageReceivingEndpoint("https://api.twitter.com/1.1/statuses/update.json", HttpDeliveryMethods.PostRequest | HttpDeliveryMethods.AuthorizationHeaderRequest);
+
 		/// <summary>
 		/// The consumer used for the Sign in to Twitter feature.
 		/// </summary>
