@@ -69,6 +69,7 @@ namespace Lektion19.Controllers
 
         public string GetTweets()
         {
+            // Uppgift 6:
             var twitter = new WebConsumer(TwitterConsumer.ServiceDescription, this.TokenManager);
             XPathDocument updates = new XPathDocument(TwitterConsumer.GetUpdates(twitter, this.AccessToken).CreateReader());
             XPathNavigator nav = updates.CreateNavigator();
